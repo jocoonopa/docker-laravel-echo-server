@@ -1,0 +1,37 @@
+name: 'Docker Build And Push to registry GitHub Action'
+description: 'Docker Build And Push to registry GitHub Action'
+inputs:
+  version:
+    description: 'Target Docker version'
+    required: true
+  username:
+    description: 'username'
+    required: true
+  token:
+    description: 'token'
+    required: true
+  registryurl:
+    description: 'registryurl'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Build Docker Image
+      id: docker_build_step
+      run: |
+        tag=${GITHUB_REF#refs/heads/}.$(git rev-parse --short HEAD)
+
+        docker build . --target echo-server -t ${{ inputs.registryurl }}/echo-server:${{ inputs.version }}
+
+        echo "::set-output name=tag::$tag"
+      shell: bash
+    - name: Login to docker registry if private registry And Push Docker Image
+      run: |
+        if [ ${{ inputs.username }} ]
+        then
+          docker login registry.gitlab.com -u ${{ inputs.username }} -p ${{ inputs.token }}
+        fi
+
+        docker push ${{ inputs.registryurl }}/echo-server:${{ inputs.version }}
+      shell: bash
