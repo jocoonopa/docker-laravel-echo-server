@@ -22,7 +22,7 @@ runs:
       run: |
         tag=${GITHUB_REF#refs/heads/}.$(git rev-parse --short HEAD)
 
-        docker build . --target echo-server -t ${{ inputs.registryurl }}/echo-server:${{ inputs.version }}
+        docker build . -t ${{ inputs.registryurl }}/echo-server:${{ inputs.version }}
 
         echo "::set-output name=tag::$tag"
       shell: bash
