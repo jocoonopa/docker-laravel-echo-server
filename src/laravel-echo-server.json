@@ -13,11 +13,6 @@
     "redis": {
       "host": "REDIS_HOST",
       "port": "REDIS_PORT",
-      "password": "REDIS_PASSWORD",
-      "keyPrefix": "REDIS_PREFIX",
-      "options": {
-        "db": "REDIS_DB"
-      }
     },
     "sqlite": {
       "databasePath": "/database/laravel-echo-server.sqlite"
